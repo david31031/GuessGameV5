@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guess ???</title>
+<link rel="stylesheet" href="style.css?v=5">
+</head>
+<body>
+<div id="toast" class="toast hidden"></div>
+
+<main class="app">
+  <h1 class="logo">Guess <span>???</span></h1>
+
+  <!-- HOME / LOBBY -->
+  <section id="screen-home" class="screen">
+    <div class="card">
+      <h2>How to play</h2>
+      <ul class="rules">
+        <li>🎮 <b>2 players</b>, 2 devices. One makes a room, the other joins with its <b>4-letter code</b>.</li>
+        <li>💡 Each round one player is the <b>Clue-giver</b>: they see a secret word and send a clue of <b>max 3 words + max 3 emojis</b>.</li>
+        <li>🔍 The other player has <b>3 chances</b> to guess it. Roles swap every round.</li>
+        <li>⭐ Guess on 1st try = <b>3 pts</b>, 2nd = <b>2 pts</b>, 3rd = <b>1 pt</b>. The clue-giver earns <b>0 pts</b> if the guess is right, but <b>3 pts</b> if the guesser fails all 3 tries (the answer is then revealed to both).</li>
+        <li>🏆 First to <b>10 points</b> wins the match!</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <label for="nameInput">Your name</label>
+      <input id="nameInput" type="text" maxlength="16" placeholder="Enter your name" autocomplete="off">
+
+      <div class="split">
+        <div>
+          <button id="btnCreate" class="btn primary">Create Room</button>
+        </div>
+        <div class="or">or</div>
+        <div class="join">
+          <input id="codeInput" type="text" maxlength="4" placeholder="CODE" autocomplete="off" autocapitalize="characters">
+          <button id="btnJoin" class="btn">Join Room</button>
+        </div>
+      </div>
+      <p id="homeMsg" class="msg"></p>
+    </div>
+  </section>
+
+  <!-- WAITING ROOM -->
+  <section id="screen-wait" class="screen hidden">
+    <div class="card center">
+      <h2 id="waitTitle">Room created!</h2>
+      <p>Share this code with your friend:</p>
+      <div id="bigCode" class="bigcode">----</div>
+      <button id="btnCopy" class="btn">📋 Copy code</button>
+      <p class="pulse" id="waitText">Waiting for Player 2 to join…</p>
+      <p class="hint">⚠️ Keep this page open and your screen on until they join.</p>
+      <button id="btnCancel" class="btn ghost">Cancel</button>
+    </div>
+  </section>
+
+  <!-- GAME -->
+  <section id="screen-game" class="screen hidden">
+    <div class="topbar">
+      <span class="pill">Room <b id="roomTag">----</b></span>
+      <span class="pill" id="roundTag">Round 1</span>
+      <button id="btnLeave" class="btn ghost small">Leave</button>
+    </div>
+
+    <div class="scores">
+      <div class="score" id="card0">
+        <div class="sname" id="name0">P1</div>
+        <div class="srole" id="role0"></div>
+        <div class="sval" id="score0">0</div>
+        <div class="bar"><i id="bar0"></i></div>
+      </div>
+      <div class="vs">first to 10</div>
+      <div class="score" id="card1">
+        <div class="sname" id="name1">P2</div>
+        <div class="srole" id="role1"></div>
+        <div class="sval" id="score1">0</div>
+        <div class="bar"><i id="bar1"></i></div>
+      </div>
+    </div>
+
+    <!-- Clue-giver: choose word + type clue -->
+    <div id="pClueGive" class="card panel hidden">
+      <p class="label">Your secret word <small>(only you can see this)</small></p>
+      <div class="secret" id="secretWord1">???</div>
+      <button id="btnReroll" class="btn small">🎲 Reroll word</button>
+
+      <label for="clueInput">Your clue <small>— max 3 words &amp; 3 emojis</small></label>
+      <input id="clueInput" type="text" placeholder="e.g. Rain, Loud, Noisy ⚡⛈️" autocomplete="off">
+      <div class="counter"><span id="clueCount">Words 0/3 · Emojis 0/3</span> <span id="clueErr" class="err"></span></div>
+      <button id="btnSendClue" class="btn primary" disabled>Send clue</button>
+    </div>
+
+    <!-- Guesser waits for clue -->
+    <div id="pClueWait" class="card panel hidden center">
+      <div class="mystery">❓❓❓</div>
+      <p class="pulse" id="waitClueText">Waiting for clue…</p>
+    </div>
+
+    <!-- Clue-giver watches -->
+    <div id="pGuessGiver" class="card panel hidden">
+      <p class="label">Secret word</p>
+      <div class="secret" id="secretWord2">???</div>
+      <p class="label">Your clue</p>
+      <div class="clue" id="clueView2"></div>
+      <div class="pips" id="pips2"></div>
+      <div class="wrong" id="wrong2"></div>
+      <p id="feedback2" class="feedback"></p>
+      <p class="pulse" id="watchText">Waiting for guess…</p>
+    </div>
+
+    <!-- Guesser guesses -->
+    <div id="pGuessGuess" class="card panel hidden">
+      <p class="label" id="clueFrom">Clue</p>
+      <div class="clue" id="clueView1"></div>
+      <div class="pips" id="pips1"></div>
+      <div class="wrong" id="wrong1"></div>
+      <p id="feedback1" class="feedback"></p>
+      <input id="guessInput" type="text" placeholder="Type your guess…" autocomplete="off">
+      <button id="btnGuess" class="btn primary">Guess!</button>
+    </div>
+
+    <!-- Reveal / game over -->
+    <div id="pReveal" class="card panel hidden center">
+      <h2 id="revTitle"></h2>
+      <p class="label">The word was</p>
+      <div class="secret" id="revWord"></div>
+      <p id="revDetail"></p>
+      <button id="btnNext" class="btn primary">Next round ▶</button>
+      <button id="btnRematch" class="btn primary hidden">🔁 Play again</button>
+    </div>
+  </section>
+
+  <p class="foot">Connects directly between devices (PeerJS). Both players need internet access. · v5</p>
+</main>
+
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<script src="game.js?v=5"></script>
+</body>
+</html>

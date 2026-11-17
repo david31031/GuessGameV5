@@ -1,0 +1,86 @@
+:root{
+  --bg1:#1b1340;--bg2:#3a1c71;--card:rgba(255,255,255,.08);--line:rgba(255,255,255,.16);
+  --text:#f6f4ff;--muted:#b9b2e0;--accent:#ffd23f;--accent2:#ff5ea8;--good:#4ade80;--bad:#ff6b6b;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--text);
+  background:linear-gradient(135deg,var(--bg1),var(--bg2) 60%,#6b2fa0) fixed;
+  display:flex;justify-content:center;padding:16px;
+}
+.app{width:100%;max-width:560px}
+.hidden{display:none!important}
+.logo{text-align:center;font-size:2.6rem;margin:8px 0 14px;letter-spacing:1px}
+.logo span{color:var(--accent);display:inline-block;animation:bob 1.6s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-6px) rotate(-4deg)}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:14px;backdrop-filter:blur(6px)}
+.card h2{margin:0 0 10px;font-size:1.15rem}
+.center{text-align:center}
+.rules{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:.95rem;line-height:1.4}
+label,.label{display:block;font-weight:600;margin:12px 0 6px;color:var(--muted);font-size:.9rem}
+label small,.label small{font-weight:400;opacity:.8}
+input[type=text]{
+  width:100%;padding:13px 14px;font-size:1.05rem;border-radius:12px;border:2px solid var(--line);
+  background:rgba(0,0,0,.28);color:var(--text);outline:none;
+}
+input[type=text]:focus{border-color:var(--accent)}
+.btn{
+  font:inherit;font-weight:700;cursor:pointer;padding:12px 18px;border-radius:12px;border:2px solid var(--line);
+  background:rgba(255,255,255,.1);color:var(--text);transition:transform .08s,opacity .2s;margin-top:10px;
+}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:linear-gradient(135deg,var(--accent2),#ff8a4c);border-color:transparent;color:#fff}
+.btn.ghost{background:transparent}
+.btn.small{padding:7px 12px;font-size:.85rem;margin-top:8px}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.split{display:flex;align-items:stretch;gap:10px;margin-top:6px;flex-wrap:wrap}
+.split>div{flex:1;min-width:140px}
+.split .btn{width:100%}
+.or{flex:0 0 auto!important;min-width:0!important;align-self:center;color:var(--muted);padding-top:10px}
+.join{display:flex;flex-direction:column}
+.join input{text-transform:uppercase;letter-spacing:6px;text-align:center;font-weight:800;margin-top:10px}
+.msg{min-height:1.2em;color:var(--bad);margin:10px 0 0;font-size:.9rem}
+.bigcode{font-size:3.4rem;font-weight:900;letter-spacing:12px;color:var(--accent);margin:8px 0;padding-left:12px}
+.pulse{animation:pulse 1.4s ease-in-out infinite;color:var(--muted)}
+@keyframes pulse{50%{opacity:.4}}
+.topbar{display:flex;gap:8px;align-items:center;margin-bottom:10px}
+.topbar .btn{margin-left:auto;margin-top:0}
+.pill{background:var(--card);border:1px solid var(--line);padding:6px 12px;border-radius:99px;font-size:.85rem}
+.scores{display:flex;gap:8px;align-items:center;margin-bottom:14px}
+.score{flex:1;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:10px;text-align:center}
+.score.me{border-color:var(--accent)}
+.sname{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.srole{font-size:.75rem;color:var(--muted);min-height:1em}
+.sval{font-size:2rem;font-weight:900;line-height:1.2}
+.bar{height:6px;background:rgba(0,0,0,.35);border-radius:9px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .5s}
+.vs{font-size:.7rem;color:var(--muted);text-align:center;width:46px}
+.secret{
+  font-size:2rem;font-weight:900;text-align:center;padding:14px;border-radius:14px;margin-bottom:6px;
+  background:rgba(255,210,63,.12);border:2px dashed var(--accent);color:var(--accent);word-break:break-word;
+}
+.mystery{font-size:3rem;margin:10px 0}
+.clue{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;font-size:1.4rem;margin:6px 0 10px}
+.chip{background:rgba(255,255,255,.14);padding:6px 14px;border-radius:99px;font-weight:700}
+.chip.emoji{background:transparent;font-size:2rem;padding:0 4px}
+.counter{display:flex;justify-content:space-between;gap:8px;font-size:.85rem;color:var(--muted);margin-top:6px;flex-wrap:wrap}
+.err{color:var(--bad)}
+.pips{display:flex;justify-content:center;gap:8px;margin:6px 0}
+.pip{width:16px;height:16px;border-radius:50%;background:var(--good);transition:background .3s}
+.pip.used{background:var(--bad)}
+.wrong{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;min-height:4px}
+.wrong .chip{background:rgba(255,107,107,.2);text-decoration:line-through;font-size:.95rem}
+.feedback{text-align:center;min-height:1.3em;font-weight:700;color:var(--bad);margin:8px 0}
+#guessInput{margin-top:4px}
+#btnGuess,#btnSendClue{width:100%}
+.toast{
+  position:fixed;left:50%;top:16px;transform:translateX(-50%);background:#111;border:1px solid var(--line);
+  padding:10px 16px;border-radius:12px;z-index:9;max-width:90%;text-align:center;box-shadow:0 6px 24px rgba(0,0,0,.4);
+}
+.foot{text-align:center;font-size:.75rem;color:var(--muted);margin:18px 0}
+.shake{animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+
+.hint{font-size:.85rem;color:var(--accent);margin:6px 0}
